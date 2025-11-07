@@ -9,15 +9,13 @@
     "lint": "eslint",
     "setup": "echo 'Setting up Quote Calculator...' && echo '1. Copy .env.local.example to .env.local' && echo '2. Update your Supabase credentials in .env.local' && echo '3. Run the SQL schema in your Supabase dashboard' && echo '4. Run npm run dev to start the application'"
   },
-  "turbo": {
-    "pipeline": {}
-  },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.58.0",
     "@types/nodemailer": "^7.0.2",
+    "@vercel/og": "^0.8.5",
     "lucide-react": "^0.544.0",
     "next": "15.5.4",
     "nodemailer": "^7.0.6",
@@ -38,3 +36,4 @@
     "typescript": "^5"
   }
 }
+
