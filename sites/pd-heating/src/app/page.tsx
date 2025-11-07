@@ -1,603 +1,217 @@
 'use client'
 
+import { useState } from 'react'
+import Link from 'next/link'
+import PDHeatingLayout from '@/components/PDHeatingLayout'
+
 export default function HomePage() {
+  const [isLoading, setIsLoading] = useState(true)
+
   return (
-    <>
-      <div dangerouslySetInnerHTML={{
-        __html: `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PD Heating & Plumbing – Fast Quotes & Trusted Local Plumbers</title>
-    <meta name="description" content="Instant quotes, WhatsApp support, and a modern website built for PD Heating & Plumbing.">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #f8f9fa;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Header/Navigation */
-        .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 20px 0;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #1E3A8A;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .logo:hover {
-            transform: scale(1.05);
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
-            color: white;
-            padding: 120px 20px 80px;
-            text-align: center;
-            margin-top: 80px;
-        }
-
-        .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            opacity: 0.95;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .hero-badges {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-bottom: 30px;
-        }
-
-        .badge {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            backdrop-filter: blur(10px);
-        }
-
-        .hero-cta {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 14px 32px;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            display: inline-block;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn-primary {
-            background: white;
-            color: #1E3A8A;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: white;
-            border: 2px solid white;
-        }
-
-        .btn-secondary:hover {
-            background: white;
-            color: #1E3A8A;
-        }
-
-        /* Stats Section */
-        .stats {
-            background: white;
-            padding: 40px 20px;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .stat-item h3 {
-            font-size: 2.5rem;
-            color: #1E3A8A;
-            margin-bottom: 5px;
-        }
-
-        .stat-item p {
-            color: #6c757d;
-            font-size: 0.95rem;
-        }
-
-        /* Apps Section */
-        .apps-section {
-            padding: 80px 20px;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .section-header h2 {
-            font-size: 2.2rem;
-            color: #2d3748;
-            margin-bottom: 15px;
-        }
-
-        .section-header p {
-            font-size: 1.1rem;
-            color: #6c757d;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        /* Primary Apps Grid */
-        .apps-grid-primary {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 35px;
-            margin-bottom: 50px;
-        }
-
-        /* Secondary Apps Grid (JobTracker & TradeHub) */
-        .apps-grid-secondary {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 35px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .app-card {
-            background: white;
-            border-radius: 16px;
-            padding: 40px 30px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.07);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .app-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.12);
-        }
-
-        .app-badge {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .badge-live {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .badge-addon {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .badge-soon {
-            background: #e7e7e7;
-            color: #666;
-        }
-
-        .app-icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            display: block;
-        }
-
-        .app-card h3 {
-            font-size: 1.6rem;
-            color: #2d3748;
-            margin-bottom: 15px;
-        }
-
-        .app-card p {
-            color: #6c757d;
-            margin-bottom: 25px;
-            line-height: 1.7;
-        }
-
-        .app-features {
-            list-style: none;
-            margin-bottom: 30px;
-        }
-
-        .app-features li {
-            padding: 10px 0;
-            color: #495057;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .app-features li:before {
-            content: "✓";
-            color: #28a745;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-
-        .app-cta {
-            padding: 12px 24px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            display: inline-block;
-            transition: all 0.3s ease;
-        }
-
-        .cta-primary {
-            background: #1E3A8A;
-            color: white;
-        }
-
-        .cta-primary:hover {
-            background: #1e40af;
-        }
-
-        .cta-secondary {
-            background: #f8f9fa;
-            color: #1E3A8A;
-            border: 2px solid #1E3A8A;
-        }
-
-        .cta-secondary:hover {
-            background: #1E3A8A;
-            color: white;
-        }
-
-        .cta-disabled {
-            background: #e9ecef;
-            color: #6c757d;
-            cursor: not-allowed;
-        }
-
-        /* Why Section */
-        .why-section {
-            background: white;
-            padding: 80px 20px;
-        }
-
-        .why-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 40px;
-            margin-top: 50px;
-        }
-
-        .why-card {
-            text-align: center;
-        }
-
-        .why-icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
-        }
-
-        .why-card h3 {
-            font-size: 1.4rem;
-            color: #2d3748;
-            margin-bottom: 15px;
-        }
-
-        .why-card p {
-            color: #6c757d;
-            line-height: 1.7;
-        }
-
-        /* Trades Section */
-        .trades-section {
-            padding: 80px 20px;
-            background: #f8f9fa;
-        }
-
-        .trades-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
-            margin-top: 40px;
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        @media (min-width: 640px) {
-            .trades-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .trades-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
-
-        .trade-badge {
-            background: white;
-            padding: 24px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 160px;
-            height: 100%;
-        }
-
-        .trade-badge:hover {
-            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.15);
-            border-color: #1E3A8A;
-        }
-
-        .trade-icon {
-            font-size: 2rem;
-            margin-bottom: 8px;
-        }
-
-        .trade-badge p {
-            color: #1f2937;
-            font-weight: 600;
-            font-size: 0.875rem;
-            margin: 0;
-        }
-
-        @media (min-width: 640px) {
-            .trade-badge p {
-                font-size: 1rem;
-            }
-        }
-
-        /* Reviews Section */
-        .reviews-section {
-            background: white;
-            padding: 80px 20px;
-            text-align: center;
-        }
-
-        .reviews-section h2 {
-            font-size: 2.2rem;
-            color: #2d3748;
-            margin-bottom: 30px;
-        }
-
-        .reviews-link {
-            display: inline-block;
-            padding: 16px 32px;
-            background: #1E3A8A;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-        }
-
-        .reviews-link:hover {
-            background: #1e40af;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(30, 58, 138, 0.3);
-        }
-
-        /* QuoteFlow Section */
-        .quoteflow-section {
-            background: #f8f9fa;
-            padding: 80px 20px;
-            text-align: center;
-        }
-
-        .quoteflow-section h2 {
-            font-size: 2.2rem;
-            color: #2d3748;
-            margin-bottom: 20px;
-        }
-
-        .quoteflow-section p {
-            font-size: 1.1rem;
-            color: #6c757d;
-            max-width: 700px;
-            margin: 0 auto 30px;
-        }
-
-        /* Footer */
-        .footer {
-            background: #2d3748;
-            color: white;
-            padding: 40px 20px;
-            text-align: center;
-        }
-
-        .footer p {
-            margin-bottom: 10px;
-            opacity: 0.8;
-        }
-
-        .footer a {
-            color: #3B82F6;
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
-        /* Final CTA */
-        .final-cta {
-            background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
-            color: white;
-            padding: 80px 20px;
-            text-align: center;
-        }
-
-        .final-cta h2 {
-            font-size: 2.2rem;
-            margin-bottom: 20px;
-        }
-
-        .final-cta p {
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-            opacity: 0.95;
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .apps-grid-primary,
-            .apps-grid-secondary {
-                grid-template-columns: 1fr;
-            }
-
-            .section-header h2 {
-                font-size: 1.8rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header-content">
-            <a href="/" class="logo">PD Heating & Plumbing</a>
-        </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <h1>Professional Heating & Plumbing Services</h1>
-            <p>Fast, reliable and affordable plumbing with instant online quotes.</p>
-            
-            <div class="hero-cta">
-                <a href="/quoteflow/calculator" class="btn btn-primary">Get an Instant Quote</a>
-                <a href="https://wa.me/447000000000" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">Message on WhatsApp</a>
+    <PDHeatingLayout>
+      {/* Hero Section */}
+      <section id="home" className="min-h-screen bg-gradient-to-br from-[#1E3A8A] to-[#3B82F6] flex items-center justify-center px-8 pt-28 pb-20 md:py-20">
+        <div className="max-w-[1400px] mx-auto text-center">
+          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+            Professional Heating & Plumbing Services
+          </h1>
+          <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto">
+            Fast, reliable and affordable plumbing with instant online quotes.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <a href="/quoteflow/calculator" className="bg-white text-[#1E3A8A] px-10 py-4 rounded-full font-semibold text-lg transition-all hover:-translate-y-1 shadow-[0_10px_30px_rgba(255,255,255,0.3)] hover:shadow-[0_15px_40px_rgba(255,255,255,0.4)]">
+              Get an Instant Quote
+            </a>
+            <a href="https://wa.me/447000000000" target="_blank" rel="noopener noreferrer" className="bg-transparent text-white px-10 py-4 rounded-full border-2 border-white font-semibold text-lg transition-all hover:bg-white hover:text-[#1E3A8A]">
+              Message on WhatsApp
+            </a>
+          </div>
+          
+          {/* Trust Indicators */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            <div className="text-center">
+              <div className="text-4xl mb-2">⚡</div>
+              <h3 className="text-white font-semibold mb-2">Instant Quotes</h3>
+              <p className="text-white/70 text-sm">Get transparent pricing in seconds</p>
             </div>
-        </div>
-    </section>
-
-    <!-- QuoteFlow Section -->
-    <section class="quoteflow-section">
-        <div class="container">
-            <h2>Get an Instant Quote</h2>
-            <p>Use our instant quote calculator to get a transparent price for your heating and plumbing needs. No hidden fees, no surprises.</p>
-            <a href="/quoteflow/calculator" class="btn btn-primary">Try the Calculator</a>
-        </div>
-    </section>
-
-    <!-- Reviews Section -->
-    <section class="reviews-section">
-        <div class="container">
-            <h2>Read Our Reviews</h2>
-            <p style="margin-bottom: 30px; color: #6c757d;">See what our customers say about PD Heating & Plumbing</p>
-            <a href="https://www.checkatrade.com/pdheating" target="_blank" rel="noopener noreferrer" class="reviews-link">View Our Checkatrade Reviews →</a>
-        </div>
-    </section>
-
-    <!-- Final CTA -->
-    <section class="final-cta">
-        <div class="container">
-            <h2>Need Professional Heating & Plumbing Services?</h2>
-            <p>Get an instant quote or message us on WhatsApp for fast, reliable service</p>
-            <div class="hero-cta">
-                <a href="/quoteflow/calculator" class="btn btn-primary">Get an Instant Quote</a>
-                <a href="https://wa.me/447000000000" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">Message on WhatsApp</a>
+            <div className="text-center">
+              <div className="text-4xl mb-2">💬</div>
+              <h3 className="text-white font-semibold mb-2">WhatsApp Support</h3>
+              <p className="text-white/70 text-sm">Message us anytime for quick responses</p>
             </div>
+            <div className="text-center">
+              <div className="text-4xl mb-2">⭐</div>
+              <h3 className="text-white font-semibold mb-2">Trusted Service</h3>
+              <p className="text-white/70 text-sm">Professional and reliable</p>
+            </div>
+          </div>
         </div>
-    </section>
+      </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 PD Heating & Plumbing. All rights reserved.</p>
-            <p>Powered by <a href="https://www.fixblox.com" target="_blank" rel="noopener noreferrer">FixBlox</a></p>
+      {/* Services Section */}
+      <section id="services" className="py-24 px-8 bg-white">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-[#1E3A8A] mb-4">Our Services</h2>
+            <p className="text-xl text-gray-800 max-w-3xl mx-auto">
+              Complete heating and plumbing solutions for your home and business
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                icon: '🔥',
+                title: 'Boiler Installation',
+                description: 'Professional boiler installation and replacement services with warranty coverage.',
+                features: ['Install new boilers', 'Replace existing systems', 'Upgrade heating systems', 'Includes warranty']
+              },
+              {
+                icon: '🔧',
+                title: 'Boiler Repairs',
+                description: 'Expert boiler repair services to get your heating back up and running quickly.',
+                features: ['Repair emergencies', 'Diagnose faults', 'Replace components', 'Same-day service']
+              },
+              {
+                icon: '📋',
+                title: 'Boiler Servicing',
+                description: 'Regular boiler maintenance to ensure efficiency and prevent breakdowns.',
+                features: ['Annual servicing', 'Safety checks', 'Optimise efficiency', 'Preventive maintenance']
+              },
+              {
+                icon: '🚰',
+                title: 'Plumbing Services',
+                description: 'Complete plumbing solutions for all your water and drainage needs.',
+                features: ['Repair leaks', 'Install pipes', 'Bathroom plumbing', 'Drainage solutions']
+              },
+              {
+                icon: '⚡',
+                title: 'Emergency Callouts',
+                description: '24/7 emergency heating and plumbing services when you need them most.',
+                features: ['Available 24/7', 'Rapid response', 'Emergency repairs', 'No call-out charges']
+              },
+              {
+                icon: '📄',
+                title: 'Landlord Certificates',
+                description: 'Gas safety certificates and compliance services for landlords.',
+                features: ['Gas safety certificates', 'Landlord compliance', 'Property inspections', 'Complete documentation']
+              }
+            ].map((service, index) => (
+              <div key={index} className="bg-gradient-to-br from-gray-50 to-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-2">
+                <div className="text-5xl mb-4">{service.icon}</div>
+                <h3 className="text-2xl font-bold text-[#1E3A8A] mb-4">{service.title}</h3>
+                <p className="text-gray-800 mb-6">{service.description}</p>
+                <ul className="space-y-2">
+                  {service.features.map((feature, featureIndex) => (
+                    <li key={featureIndex} className="flex items-center text-sm text-gray-800">
+                      <span className="text-[#1E3A8A] mr-2">✓</span>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
-    </footer>
-</body>
-</html>
-        `
-      }} />
-    </>
+      </section>
+
+      {/* Reviews Section */}
+      <section id="reviews" className="py-24 px-8 bg-gradient-to-br from-[#1E3A8A] to-[#3B82F6] text-white">
+        <div className="max-w-[1400px] mx-auto text-center">
+          <div className="mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Read Our Reviews</h2>
+            <p className="text-xl text-white/90 mb-8">See what our customers say about PD Heating & Plumbing</p>
+          </div>
+          <a 
+            href="https://www.checkatrade.com/pdheating" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-white text-[#1E3A8A] px-8 py-3 rounded-full font-semibold transition-all hover:-translate-y-1 shadow-lg mb-12"
+          >
+            View Our Checkatrade Reviews
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl">
+              <div className="text-4xl mb-4">⭐⭐⭐⭐⭐</div>
+              <p className="text-white/90 mb-4">&ldquo;Excellent service, very professional and clean work. Highly recommend!&rdquo;</p>
+              <p className="text-white/70 text-sm">&mdash; Sarah M.</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl">
+              <div className="text-4xl mb-4">⭐⭐⭐⭐⭐</div>
+              <p className="text-white/90 mb-4">&ldquo;Fixed our boiler quickly and efficiently. Great communication throughout.&rdquo;</p>
+              <p className="text-white/70 text-sm">&mdash; James L.</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl">
+              <div className="text-4xl mb-4">⭐⭐⭐⭐⭐</div>
+              <p className="text-white/90 mb-4">&ldquo;Reliable, trustworthy, and excellent value for money. Will definitely use again.&rdquo;</p>
+              <p className="text-white/70 text-sm">&mdash; Emma R.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      {/* Book Now Section */}
+      <section id="book-now" className="py-24 px-8 bg-gray-50">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-5xl font-bold text-[#1E3A8A] mb-4">Get an Instant Quote</h2>
+            <p className="text-xl text-gray-800">Fill out the form below to get an instant, transparent quote for your heating and plumbing needs.</p>
+          </div>
+          <div className="w-full flex justify-center py-10">
+            {isLoading && (
+              <div className="animate-pulse text-center py-10 text-gray-500">
+                Loading calculator...
+              </div>
+            )}
+            <iframe
+              src="/quoteflow/embed"
+              className="w-full max-w-3xl rounded-xl border-0 shadow-sm"
+              allow="forms; scripts; same-origin"
+              style={{
+                minHeight: "700px",
+                overflow: "visible",
+                borderRadius: "12px",
+                opacity: isLoading ? 0 : 1,
+                transition: "opacity 0.3s ease-in-out"
+              }}
+              onLoad={() => {
+                setTimeout(() => setIsLoading(false), 500) // Small delay to ensure content is ready
+              }}
+              loading="lazy"
+              title="PD Heating & Plumbing Quote Request Form"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="py-24 px-8 bg-gradient-to-br from-[#1E3A8A] to-[#3B82F6] text-center">
+        <div className="max-w-[800px] mx-auto">
+          <h2 className="text-5xl font-bold text-white mb-4">Need Help Now?</h2>
+          <p className="text-xl text-white/90 mb-8">Get an instant quote or message us on WhatsApp</p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a 
+              href="https://wa.me/447000000000?text=Hi%20I%27m%20interested%20in%20getting%20a%20quote" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 bg-[#25D366] text-white px-10 py-4 rounded-full font-semibold text-lg transition-all hover:-translate-y-1 shadow-lg"
+            >
+              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+              </svg>
+              Message on WhatsApp
+            </a>
+            <a href="/quoteflow/calculator" className="bg-white text-[#1E3A8A] px-10 py-4 rounded-full border-2 border-white font-semibold text-lg transition-all hover:bg-transparent hover:text-white">
+              Get an Instant Quote
+            </a>
+          </div>
+        </div>
+      </section>
+    </PDHeatingLayout>
   )
 }

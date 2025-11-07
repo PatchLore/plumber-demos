@@ -1,0 +1,49 @@
+import { getServerSupabase } from "@/lib/supabase-server";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+
+export async function middleware(req: NextRequest) {
+  // Only protect /admin routes, but exclude /admin/sign-in and /admin/reset-password
+  if (
+    req.nextUrl.pathname.startsWith("/admin") &&
+    !req.nextUrl.pathname.startsWith("/admin/sign-in") &&
+    !req.nextUrl.pathname.startsWith("/admin/reset-password")
+  ) {
+    const supabase = getServerSupabase();
+    
+    try {
+      const {
+        data: { user },
+        error
+      } = await supabase.auth.getUser();
+
+      // If there's an error getting the user, allow the request to proceed
+      // This prevents blocking legitimate requests due to session issues
+      if (error) {
+        console.log('Middleware auth error:', error.message);
+        return NextResponse.next();
+      }
+
+      if (!user) {
+        const redirectUrl = new URL("/admin/sign-in", req.url);
+        redirectUrl.searchParams.set("redirectedFrom", req.nextUrl.pathname);
+        return NextResponse.redirect(redirectUrl);
+      }
+
+      // Check if user has admin role
+      if (user.app_metadata?.role !== "admin") {
+        return NextResponse.redirect(new URL("/", req.url));
+      }
+    } catch (err) {
+      console.log('Middleware error:', err);
+      // On any error, allow the request to proceed
+      return NextResponse.next();
+    }
+  }
+
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: ['/admin/:path*']
+}

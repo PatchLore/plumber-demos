@@ -1,53 +1,47 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect } from 'react'
 
 export default function QuoteFlowLandingPage() {
-  // Set document title and meta description
-  useEffect(() => {
-    document.title = "Get an Instant Quote | OnTime CMS"
-    const metaDescription = document.querySelector('meta[name="description"]')
-    if (metaDescription) {
-      metaDescription.setAttribute('content', 'Turn website visitors into paying customers with instant, transparent quotes. Capture qualified leads automatically and manage everything from your dashboard. Built specifically for tradespeople.')
-    }
-  }, [])
   return (
     <div className="overflow-x-hidden bg-white">
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-md px-[5%] py-6 flex justify-between items-center z-[1000] shadow-[0_2px_20px_rgba(0,0,0,0.05)]">
-        <Link href="/" className="text-[1.8rem] font-extrabold text-[#334155] hover:text-[#F97316]">
-          OnTime CMS
+        <Link href="/" className="text-[1.8rem] font-extrabold bg-gradient-to-r from-[#FF6B35] to-[#F7931E] bg-clip-text text-transparent">
+          EcoFlame
         </Link>
         <ul className="hidden md:flex gap-10 list-none">
-          <li><Link href="/" className="text-[#0A0E27] no-underline font-medium hover:after:w-full relative after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-0 after:h-[2px] after:bg-[#F97316] after:transition-all">Home</Link></li>
-          <li><Link href="/quoteflow" className="text-[#F97316] no-underline font-semibold">Get a Quote</Link></li>
-          <li><Link href="https://wa.me/447000000000" target="_blank" rel="noopener noreferrer" className="text-[#0A0E27] no-underline font-medium hover:after:w-full relative after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-0 after:h-[2px] after:bg-[#F97316] after:transition-all">Contact</Link></li>
+          <li><Link href="/" className="text-[#0A0E27] no-underline font-medium hover:after:w-full relative after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-0 after:h-[2px] after:bg-gradient-to-r after:from-[#0066FF] after:to-[#00D9FF] after:transition-all">Home</Link></li>
+          <li><Link href="/quoteflow" className="text-[#0066FF] no-underline font-semibold">QuoteFlow</Link></li>
+          <li><Link href="/contact" className="text-[#0A0E27] no-underline font-medium hover:after:w-full relative after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-0 after:h-[2px] after:bg-gradient-to-r after:from-[#0066FF] after:to-[#00D9FF] after:transition-all">Contact</Link></li>
         </ul>
-        <Link href="/quoteflow/calculator" className="bg-[#F97316] text-white px-8 py-3 rounded-full font-semibold transition-all hover:-translate-y-0.5 hover:bg-[#ea580c] shadow-[0_4px_15px_rgba(249,115,22,0.3)] hover:shadow-[0_6px_25px_rgba(249,115,22,0.4)]">
-          Get Instant Quote
+        <Link href="/quoteflow/calculator" className="bg-gradient-to-r from-[#0066FF] to-[#00D9FF] text-white px-8 py-3 rounded-full font-semibold transition-all hover:-translate-y-0.5 shadow-[0_4px_15px_rgba(0,102,255,0.3)] hover:shadow-[0_6px_25px_rgba(0,102,255,0.4)]">
+          Try Calculator
         </Link>
       </nav>
 
       {/* Hero Section */}
-      <section className="mt-20 min-h-[90vh] flex items-center px-[5%] py-16 bg-gradient-to-br from-[#334155] to-[#475569] relative overflow-hidden">
-        <div className="absolute w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(249,115,22,0.3)_0%,transparent_70%)] top-[-300px] right-[-300px] animate-[pulse_4s_ease-in-out_infinite]"></div>
+      <section className="mt-20 min-h-[90vh] flex items-center px-[5%] py-16 bg-gradient-to-br from-[#0A0E27] to-[#1a1f3a] relative overflow-hidden">
+        <div className="absolute w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(0,102,255,0.3)_0%,transparent_70%)] top-[-300px] right-[-300px] animate-[pulse_4s_ease-in-out_infinite]"></div>
         
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10 w-full">
           <div>
+            <div className="inline-block px-4 py-2 bg-white/10 backdrop-blur-md text-white rounded-full text-sm font-medium mb-6 border border-white/20">
+              Quote Calculator by EcoFlame
+            </div>
             <h1 className="text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold leading-tight text-white mb-6">
-              Get an Instant Quote for Your <span className="bg-gradient-to-r from-[#F97316] to-[#fb923c] bg-clip-text text-transparent">Plumbing & Maintenance Needs</span>
+              Instant <span className="bg-gradient-to-r from-[#FF6B35] to-[#F7931E] bg-clip-text text-transparent">Heating Quotes</span>
             </h1>
             <p className="text-xl text-white/85 mb-8">
-              Fast, transparent pricing for all your plumbing and maintenance requirements. Get an instant quote in seconds, no hidden fees.
+              Get transparent pricing for your boiler and heating needs in seconds. Professional service with fixed prices and no hidden fees.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
-              <Link href="/quoteflow/calculator" className="bg-[#F97316] text-white px-10 py-4 rounded-full font-semibold text-lg transition-all hover:-translate-y-1 hover:bg-[#ea580c] shadow-[0_10px_30px_rgba(249,115,22,0.4)] hover:shadow-[0_15px_40px_rgba(249,115,22,0.5)] text-center">
-                Get an Instant Quote
+              <Link href="/quoteflow/calculator" className="bg-gradient-to-r from-[#0066FF] to-[#00D9FF] text-white px-10 py-4 rounded-full font-semibold text-lg transition-all hover:-translate-y-1 shadow-[0_10px_30px_rgba(0,102,255,0.4)] hover:shadow-[0_15px_40px_rgba(0,102,255,0.5)] text-center">
+                Try the Calculator
             </Link>
-              <Link href="https://wa.me/447000000000" target="_blank" rel="noopener noreferrer" className="bg-transparent text-white px-10 py-4 rounded-full border-2 border-white font-semibold text-lg transition-all hover:bg-white hover:text-[#334155] text-center">
-                Message Us Anytime
+              <Link href="/contact" className="bg-transparent text-white px-10 py-4 rounded-full border-2 border-white font-semibold text-lg transition-all hover:bg-white hover:text-[#0A0E27] text-center">
+                Get in Touch
             </Link>
           </div>
 
@@ -65,7 +59,7 @@ export default function QuoteFlowLandingPage() {
                 </div>
                 <div className="text-right">
                   <div className="text-xs text-[#8B92A7] mb-1">Estimated Total</div>
-                  <div className="text-3xl font-extrabold bg-gradient-to-r from-[#334155] to-[#F97316] bg-clip-text text-transparent">£194</div>
+                  <div className="text-3xl font-extrabold bg-gradient-to-r from-[#0066FF] to-[#00D9FF] bg-clip-text text-transparent">£194</div>
                 </div>
               </div>
 
@@ -75,7 +69,7 @@ export default function QuoteFlowLandingPage() {
                 <div className="flex justify-between"><span className="text-[#8B92A7]">Travel fee</span><span className="font-medium">£50</span></div>
               </div>
 
-              <div className="bg-gradient-to-r from-[#334155] to-[#F97316] text-white py-3 px-4 rounded-xl text-center font-semibold">
+              <div className="bg-gradient-to-r from-[#0066FF] to-[#00D9FF] text-white py-3 px-4 rounded-xl text-center font-semibold">
                 Send My Details →
               </div>
             </div>
@@ -84,7 +78,7 @@ export default function QuoteFlowLandingPage() {
         </div>
       </section>
 
-      {/* How It Works for Tradespeople */}
+      {/* How It Works for Plumbers */}
       <section className="py-24 px-[5%] bg-[#F5F7FA]">
         <div className="text-center max-w-[800px] mx-auto mb-16">
           <h2 className="text-4xl md:text-5xl font-extrabold mb-4 text-[#0A0E27]">How QuoteFlow Works for You</h2>
@@ -98,7 +92,7 @@ export default function QuoteFlowLandingPage() {
             { num: '3', title: 'Manage from Dashboard', desc: 'Track all your leads in the admin dashboard. Update job status, export to CSV, and keep everything organized. No more spreadsheets or missed opportunities.' }
           ].map((step, index) => (
             <div key={index} className="text-center bg-white p-8 rounded-2xl">
-              <div className="w-[90px] h-[90px] bg-gradient-to-r from-[#334155] to-[#F97316] rounded-full flex items-center justify-center text-[2.5rem] font-extrabold text-white mx-auto mb-6 shadow-[0_10px_30px_rgba(249,115,22,0.3)]">
+              <div className="w-[90px] h-[90px] bg-gradient-to-r from-[#0066FF] to-[#00D9FF] rounded-full flex items-center justify-center text-[2.5rem] font-extrabold text-white mx-auto mb-6 shadow-[0_10px_30px_rgba(0,102,255,0.3)]">
                 {step.num}
               </div>
               <h3 className="text-2xl mb-4 text-[#0A0E27] font-bold">{step.title}</h3>
@@ -138,7 +132,7 @@ export default function QuoteFlowLandingPage() {
       {/* Plumber Testimonials */}
       <section className="py-24 px-[5%] bg-[#F5F7FA]">
         <div className="text-center max-w-[800px] mx-auto mb-16">
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-4 text-[#0A0E27]">Trusted by Professional Tradespeople</h2>
+          <h2 className="text-4xl md:text-5xl font-extrabold mb-4 text-[#0A0E27]">Trusted by Professional Plumbers</h2>
           <p className="text-xl text-[#8B92A7]">See what tradespeople are saying about QuoteFlow</p>
                   </div>
 
@@ -152,7 +146,7 @@ export default function QuoteFlowLandingPage() {
               <div className="text-[#FFD700] mb-4 text-xl">★★★★★</div>
               <p className="text-lg leading-[1.8] text-[#0A0E27] mb-6 italic">&ldquo;{testimonial.quote}&rdquo;</p>
               <div className="flex items-center gap-4">
-                <div className="w-[55px] h-[55px] bg-gradient-to-r from-[#334155] to-[#F97316] rounded-full flex items-center justify-center text-white font-bold text-xl">
+                <div className="w-[55px] h-[55px] bg-gradient-to-r from-[#0066FF] to-[#00D9FF] rounded-full flex items-center justify-center text-white font-bold text-xl">
                   {testimonial.initial}
                 </div>
                 <div>
@@ -166,56 +160,69 @@ export default function QuoteFlowLandingPage() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-24 px-[5%] bg-gradient-to-br from-[#334155] to-[#475569] text-center text-white relative overflow-hidden">
-        <div className="absolute w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(249,115,22,0.2)_0%,transparent_70%)] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-[pulse_3s_ease-in-out_infinite]"></div>
+      <section className="py-24 px-[5%] bg-gradient-to-br from-[#0A0E27] to-[#1a1f3a] text-center text-white relative overflow-hidden">
+        <div className="absolute w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(0,217,255,0.2)_0%,transparent_70%)] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-[pulse_3s_ease-in-out_infinite]"></div>
         
         <div className="relative z-10">
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-4">Ready to Get Started?</h2>
+          <h2 className="text-4xl md:text-5xl font-extrabold mb-4">Ready to Start Generating Leads?</h2>
           <p className="text-xl md:text-2xl mb-10 opacity-90 max-w-[700px] mx-auto">
-            Get an instant quote for your plumbing and maintenance needs, or message us on WhatsApp
+            Start using QuoteFlow to win more jobs and grow your plumbing business
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/quoteflow/calculator" className="inline-block bg-[#F97316] text-white px-12 py-5 rounded-full font-semibold text-lg transition-all hover:-translate-y-1 hover:bg-[#ea580c] shadow-[0_10px_30px_rgba(249,115,22,0.4)]">
-              Get an Instant Quote
+            <Link href="/quoteflow/calculator" className="inline-block bg-gradient-to-r from-[#0066FF] to-[#00D9FF] text-white px-12 py-5 rounded-full font-semibold text-lg transition-all hover:-translate-y-1 shadow-[0_10px_30px_rgba(0,102,255,0.4)]">
+              Try the Calculator
             </Link>
-            <Link href="https://wa.me/447000000000" target="_blank" rel="noopener noreferrer" className="inline-block bg-transparent text-white px-12 py-5 rounded-full border-2 border-white font-semibold text-lg transition-all hover:bg-white hover:text-[#334155]">
-              Message Us Anytime
+            <Link href="/contact" className="inline-block bg-transparent text-white px-12 py-5 rounded-full border-2 border-white font-semibold text-lg transition-all hover:bg-white hover:text-[#0A0E27]">
+              Contact Us
             </Link>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#334155] text-white py-16 px-[5%]">
+      <footer className="bg-[#0A0E27] text-white py-16 px-[5%]">
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-8">
           <div>
-            <h3 className="text-[1.8rem] font-extrabold text-white mb-4">
-              OnTime CMS
+            <h3 className="text-[1.8rem] font-extrabold bg-gradient-to-r from-[#0066FF] to-[#00D9FF] bg-clip-text text-transparent mb-4">
+              FixBlox
             </h3>
             <p className="opacity-70 leading-[1.7]">
-              Professional plumbing and maintenance services with instant quotes and WhatsApp support.
+              Building powerful web applications for tradespeople. Modern solutions that help you win more jobs and grow your business.
             </p>
           </div>
           <div>
-            <h4 className="mb-4 text-lg font-semibold">Services</h4>
+            <h4 className="mb-4 text-lg font-semibold">Our Apps</h4>
             <ul className="space-y-2 list-none">
-              <li><Link href="/quoteflow/calculator" className="text-white/70 no-underline block transition-all hover:text-white hover:pl-1">Get a Quote</Link></li>
-              <li><a href="https://www.checkatrade.com/ontimecms" target="_blank" rel="noopener noreferrer" className="text-white/70 no-underline block transition-all hover:text-white hover:pl-1">Reviews</a></li>
-              <li><Link href="https://wa.me/447000000000" target="_blank" rel="noopener noreferrer" className="text-white/70 no-underline block transition-all hover:text-white hover:pl-1">Contact</Link></li>
+              <li><Link href="/quoteflow" className="text-white/70 no-underline block transition-all hover:text-white hover:pl-1">QuoteFlow (Plumbers)</Link></li>
+              <li><Link href="/contact" className="text-white/70 no-underline block transition-all hover:text-white hover:pl-1">JobTracker (Soon)</Link></li>
+              <li><Link href="/contact" className="text-white/70 no-underline block transition-all hover:text-white hover:pl-1">TradeHub (Soon)</Link></li>
             </ul>
           </div>
           <div>
-            <h4 className="mb-4 text-lg font-semibold">Contact</h4>
+            <h4 className="mb-4 text-lg font-semibold">Company</h4>
             <ul className="space-y-2 list-none">
-              <li><Link href="https://wa.me/447000000000" target="_blank" rel="noopener noreferrer" className="text-white/70 no-underline block transition-all hover:text-white hover:pl-1">WhatsApp</Link></li>
-              <li><a href="https://www.checkatrade.com/ontimecms" target="_blank" rel="noopener noreferrer" className="text-white/70 no-underline block transition-all hover:text-white hover:pl-1">Checkatrade</a></li>
+              <li><a href="#how-it-works" className="text-white/70 no-underline block transition-all hover:text-white hover:pl-1">How It Works</a></li>
+              <li><a href="#apps" className="text-white/70 no-underline block transition-all hover:text-white hover:pl-1">Our Apps</a></li>
+              <li><Link href="/contact" className="text-white/70 no-underline block transition-all hover:text-white hover:pl-1">Contact</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="mb-4 text-lg font-semibold">Support</h4>
+            <ul className="space-y-2 list-none">
+              <li><Link href="/contact" className="text-white/70 no-underline block transition-all hover:text-white hover:pl-1">Get in Touch</Link></li>
+              <li><a href="mailto:adam@ecoflame.info" className="text-white/70 no-underline block transition-all hover:text-white hover:pl-1">adam@ecoflame.info</a></li>
+              <li>
+                <a href="tel:+447925990923" className="text-white/70 no-underline block transition-all hover:text-white hover:pl-1">07925990923</a>
+              </li>
+              <li>
+                <a href="tel:02080884352" className="text-white/70 no-underline block transition-all hover:text-white hover:pl-1">0208 088 4352</a>
+              </li>
             </ul>
           </div>
         </div>
         
         <div className="border-t border-white/10 pt-8 text-center opacity-70">
-          <p>&copy; 2025 OnTime CMS. All rights reserved.</p>
-          <p className="mt-2">Powered by <a href="https://www.fixblox.com" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white underline">FixBlox</a></p>
+          <p>&copy; 2025 FixBlox. Web app solutions for tradespeople.</p>
       </div>
       </footer>
 
