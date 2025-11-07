@@ -5,6 +5,17 @@ import { useState, useEffect } from 'react'
 // Force dynamic rendering
 export const dynamic = 'force-dynamic'
 import { useForm } from 'react-hook-form'
+
+// Add document title in component
+const setDocumentMetadata = () => {
+  if (typeof window !== 'undefined') {
+    document.title = "Get Instant Plumbing Quote | QuoteFlow Calculator | FixBlox"
+    const metaDescription = document.querySelector('meta[name="description"]')
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Get an instant, accurate plumbing quote in 30 seconds. Free online calculator for emergency repairs, boiler service, bathroom installation, and more.')
+    }
+  }
+}
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Calculator, CheckCircle } from 'lucide-react'
@@ -31,14 +42,14 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>
 
-// Static heating services with base prices (module scope for stable deps)
+// Static plumbing services with base prices (module scope for stable deps)
 const serviceBasePrices: Record<string, number> = {
-  'emergencies': 150,
-  'boiler installations & repairs': 180,
-  'landlord certificates': 80,
-  'plumbing': 120,
-  'powerflushing & upgrades': 350,
-  'vented & unvented cylinders': 200,
+  'emergency leak repair': 120,
+  'boiler service/repair': 150,
+  'toilet/tap installation': 80,
+  'bathroom installation': 800,
+  'drain unblocking': 100,
+  'central heating work': 200,
 }
 
 export default function CalculatorPage() {
@@ -46,6 +57,11 @@ export default function CalculatorPage() {
   const [showLeadCapture, setShowLeadCapture] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitSuccess, setSubmitSuccess] = useState(false)
+
+  // Set document metadata on mount
+  useEffect(() => {
+    setDocumentMetadata()
+  }, [])
 
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -100,7 +116,11 @@ export default function CalculatorPage() {
   }
 
   const handleLeadSubmit = async (leadData: { name: string; email: string; phone: string }) => {
+    console.log('handleLeadSubmit called with:', leadData)
+    console.log('pricingResult:', pricingResult)
+    
     if (!pricingResult) {
+      console.log('No pricing result, returning early')
       return
     }
 
@@ -123,20 +143,31 @@ export default function CalculatorPage() {
         estimated_quote: pricingResult.totalPrice,
       }
 
+      console.log('Sending payload:', payload)
+
       const res = await fetch('/api/leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       })
 
+      console.log('Response status:', res.status)
+      console.log('Response ok:', res.ok)
+
       if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}))
+        console.log('Error response:', errorData)
         alert('Error saving your details. Please try again.')
         return
       }
 
+      const responseData = await res.json()
+      console.log('Success response:', responseData)
+
       setSubmitSuccess(true)
       setShowLeadCapture(false)
     } catch (error) {
+      console.log('Catch error:', error)
       alert('Error saving your details. Please try again.')
     } finally {
       setIsSubmitting(false)
@@ -146,22 +177,22 @@ export default function CalculatorPage() {
   if (submitSuccess) {
     return (
       <div className="min-h-screen bg-white">
-        {/* Navigation */}
+        {/* FixBlox Navigation */}
         <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-md px-[5%] py-6 flex justify-between items-center z-[1000] shadow-[0_2px_20px_rgba(0,0,0,0.05)]">
-          <Link href="/" className="text-[1.8rem] font-extrabold text-[#1E3A8A] hover:text-[#3B82F6] transition-opacity">
-            PD Heating & Plumbing
+          <Link href="/" className="text-[1.8rem] font-extrabold bg-gradient-to-r from-[#0066FF] to-[#00D9FF] bg-clip-text text-transparent hover:opacity-80 transition-opacity">
+            FixBlox
           </Link>
           <ul className="hidden md:flex gap-10 list-none">
-            <li><Link href="/" className="text-[#0A0E27] no-underline font-medium hover:text-[#1E3A8A] transition-colors">Home</Link></li>
-            <li><Link href="/quoteflow" className="text-[#1E3A8A] no-underline font-semibold">QuoteFlow</Link></li>
-            <li><Link href="/contact" className="text-[#0A0E27] no-underline font-medium hover:text-[#1E3A8A] transition-colors">Contact</Link></li>
+            <li><Link href="/" className="text-[#0A0E27] no-underline font-medium hover:text-[#0066FF] transition-colors">Home</Link></li>
+            <li><Link href="/quoteflow" className="text-[#0066FF] no-underline font-semibold">QuoteFlow</Link></li>
+            <li><Link href="/contact" className="text-[#0A0E27] no-underline font-medium hover:text-[#0066FF] transition-colors">Contact</Link></li>
           </ul>
-          <Link href="/" className="text-[#1E3A8A] no-underline font-medium hover:text-[#3B82F6] transition-colors">
+          <Link href="/" className="text-[#0066FF] no-underline font-medium hover:text-[#0A0E27] transition-colors">
             ← Back to Home
           </Link>
         </nav>
 
-        <div className="mt-20 min-h-screen bg-gradient-to-br from-green-50 to-orange-50 flex items-center justify-center px-4">
+        <div className="mt-20 min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center px-4">
           <div className="max-w-2xl w-full">
             {/* Success Card for Customer */}
             <div className="bg-white rounded-xl shadow-lg p-8 text-center mb-6">
@@ -173,7 +204,7 @@ export default function CalculatorPage() {
               <div className="space-y-3">
                 <Link
                   href="/quoteflow/calculator"
-                  className="block w-full bg-[#1E3A8A] hover:bg-[#1e40af] text-white py-3 px-4 rounded-lg hover:shadow-lg transition-all font-semibold"
+                  className="block w-full bg-gradient-to-r from-[#0066FF] to-[#00D9FF] text-white py-3 px-4 rounded-lg hover:shadow-lg transition-all font-semibold"
                 >
                   Get Another Quote
                 </Link>
@@ -181,14 +212,14 @@ export default function CalculatorPage() {
                   href="/"
                   className="block w-full bg-gray-100 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-200 transition-colors"
                 >
-                  Back to Home
+                  Back to FixBlox Home
                 </Link>
               </div>
             </div>
 
-            {/* Plumber CTA */}
+            {/* Tradesperson CTA */}
             <div className="bg-gradient-to-br from-[#0A0E27] to-[#1a1f3a] rounded-xl shadow-lg p-8 text-center text-white">
-              <div className="text-sm font-medium mb-3 text-[#00D9FF]">Are you a plumber?</div>
+              <div className="text-sm font-medium mb-3 text-[#00D9FF]">Are you a tradesperson?</div>
               <h2 className="text-2xl font-bold mb-3">Want leads like this sent to your dashboard?</h2>
               <p className="text-white/80 mb-6">
                 Sign up for QuoteFlow and start receiving qualified leads automatically. Get notified instantly when customers request quotes in your area.
@@ -196,7 +227,7 @@ export default function CalculatorPage() {
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Link
                   href="/contact"
-                  className="bg-[#1E3A8A] hover:bg-[#1e40af] text-white py-3 px-8 rounded-full font-semibold hover:-translate-y-0.5 transition-all shadow-lg"
+                  className="bg-gradient-to-r from-[#0066FF] to-[#00D9FF] text-white py-3 px-8 rounded-full font-semibold hover:-translate-y-0.5 transition-all shadow-lg"
                 >
                   Get in Touch
                 </Link>
@@ -218,33 +249,33 @@ export default function CalculatorPage() {
     <div className="min-h-screen bg-white">
       {/* FixBlox Navigation */}
       <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-md px-[5%] py-6 flex justify-between items-center z-[1000] shadow-[0_2px_20px_rgba(0,0,0,0.05)]">
-        <Link href="/" className="text-[1.8rem] font-extrabold text-[#1E3A8A] hover:text-[#3B82F6] transition-opacity">
-          PD Heating & Plumbing
+        <Link href="/" className="text-[1.8rem] font-extrabold bg-gradient-to-r from-[#0066FF] to-[#00D9FF] bg-clip-text text-transparent hover:opacity-80 transition-opacity">
+          FixBlox
         </Link>
         <ul className="hidden md:flex gap-10 list-none">
-          <li><Link href="/" className="text-[#0A0E27] no-underline font-medium hover:text-[#1E3A8A] transition-colors">Home</Link></li>
-          <li><Link href="/quoteflow" className="text-[#1E3A8A] no-underline font-semibold">QuoteFlow</Link></li>
-          <li><Link href="/contact" className="text-[#0A0E27] no-underline font-medium hover:text-[#1E3A8A] transition-colors">Contact</Link></li>
+          <li><Link href="/" className="text-[#0A0E27] no-underline font-medium hover:text-[#0066FF] transition-colors">Home</Link></li>
+          <li><Link href="/quoteflow" className="text-[#0066FF] no-underline font-semibold">QuoteFlow</Link></li>
+          <li><Link href="/contact" className="text-[#0A0E27] no-underline font-medium hover:text-[#0066FF] transition-colors">Contact</Link></li>
         </ul>
-        <Link href="/quoteflow" className="text-[#1E3A8A] no-underline font-medium hover:text-[#3B82F6] transition-colors">
+        <Link href="/quoteflow" className="text-[#0066FF] no-underline font-medium hover:text-[#0A0E27] transition-colors">
           ← Back to QuoteFlow
         </Link>
       </nav>
 
-      <div className="mt-20 bg-gradient-to-br from-orange-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8 min-h-screen">
+      <div className="mt-20 bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8 min-h-screen">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="text-center mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">PD Heating & Plumbing - Instant Quotes</h1>
-            <p className="text-lg text-gray-600">Fast, transparent heating & plumbing quotes in 30 seconds</p>
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">QuoteFlow - Instant Plumbing Quotes</h1>
+            <p className="text-lg text-gray-600">Fast, transparent plumbing quotes in 30 seconds</p>
           </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Calculator Form */}
           <div className="bg-white rounded-xl shadow-lg p-6">
             <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-              <Calculator className="h-5 w-5 mr-2 text-[#1E3A8A]" />
-              Heating Job Details
+              <Calculator className="h-5 w-5 mr-2 text-blue-600" />
+              Plumbing Job Details
             </h2>
             
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -253,15 +284,15 @@ export default function CalculatorPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">Service Type *</label>
                 <select
                   {...register('jobType')}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
-                  <option value="">Select a heating service</option>
-                  <option value="emergencies">Emergencies (24/7 Call Out)</option>
-                  <option value="boiler installations & repairs">Boiler Installations & Repairs</option>
-                  <option value="landlord certificates">Landlord Certificates (Gas Safety)</option>
-                  <option value="plumbing">Plumbing Services</option>
-                  <option value="powerflushing & upgrades">Powerflushing & Upgrades</option>
-                  <option value="vented & unvented cylinders">Vented & Unvented Cylinders</option>
+                  <option value="">Select a plumbing service</option>
+                  <option value="emergency leak repair">Emergency Leak Repair - £120 base</option>
+                  <option value="boiler service/repair">Boiler Service/Repair - £150 base</option>
+                  <option value="toilet/tap installation">Toilet/Tap Installation - £80 base</option>
+                  <option value="bathroom installation">Bathroom Installation - £800 base</option>
+                  <option value="drain unblocking">Drain Unblocking - £100 base</option>
+                  <option value="central heating work">Central Heating Work - £200 base</option>
                 </select>
                 {errors.jobType && (
                   <p className="mt-1 text-sm text-red-600">{errors.jobType.message}</p>
@@ -274,7 +305,7 @@ export default function CalculatorPage() {
                   <label className="block text-sm font-medium text-gray-700 mb-2">Property Type</label>
                   <select
                     {...register('propertyType')}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   >
                     <option value="">Select</option>
                     <option value="house">House</option>
@@ -286,7 +317,7 @@ export default function CalculatorPage() {
                   <label className="block text-sm font-medium text-gray-700 mb-2">Number of Bathrooms</label>
                   <select
                     {...register('bathrooms')}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   >
                     <option value="">Select</option>
                     <option value="1">1</option>
@@ -305,7 +336,7 @@ export default function CalculatorPage() {
                   type="text"
                   {...register('postcode')}
                   placeholder="e.g., SW1A 1AA"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
                 {errors.postcode && (
                   <p className="mt-1 text-sm text-red-600">{errors.postcode.message}</p>
@@ -324,7 +355,7 @@ export default function CalculatorPage() {
                         type="radio"
                         {...register('urgency')}
                         value={option.value}
-                        className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300"
+                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
                       />
                       <span className="ml-2 text-sm text-gray-700">{option.label}</span>
                     </label>
@@ -344,13 +375,13 @@ export default function CalculatorPage() {
                   {...register('jobDetails')}
                   rows={4}
                   placeholder="Describe your project in more detail..."
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-orange-600 text-white py-3 px-4 rounded-lg hover:bg-orange-700 transition-colors font-semibold"
+                className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors font-semibold"
               >
                 Calculate Quote
               </button>
@@ -360,14 +391,14 @@ export default function CalculatorPage() {
           {/* Quote Display */}
           <div className="bg-white rounded-xl shadow-lg p-6">
             <h2 className="text-xl font-semibold text-gray-900 mb-2">Your Quote</h2>
-            <p className="text-sm text-gray-500 mb-6">Professional heating & boiler services at fair prices</p>
+            <p className="text-sm text-gray-500 mb-6">Professional plumbing at fair prices</p>
             
                 {pricingResult ? (
               <div className="space-y-4">
-                    <div className="bg-orange-50 rounded-lg p-4 border border-orange-100">
+                    <div className="bg-blue-50 rounded-lg p-4 border border-blue-100">
                   <div className="text-center">
                     <p className="text-sm text-gray-600 mb-2">Estimated Quote</p>
-                    <p className="text-3xl font-bold text-orange-600">
+                    <p className="text-3xl font-bold text-blue-600">
                       £{pricingResult.totalPrice.toFixed(0)}
                     </p>
                     <p className="text-sm text-gray-600 mt-1">
@@ -471,7 +502,7 @@ function LeadCaptureModal({
               required
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
           
@@ -484,7 +515,7 @@ function LeadCaptureModal({
               required
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
           
@@ -497,7 +528,7 @@ function LeadCaptureModal({
               required
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
           
@@ -512,7 +543,7 @@ function LeadCaptureModal({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex-1 bg-orange-600 text-white py-2 px-4 rounded-lg hover:bg-orange-700 transition-colors disabled:opacity-50"
+              className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
             >
               {isSubmitting ? 'Sending...' : 'Send Details'}
             </button>

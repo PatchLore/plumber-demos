@@ -1,29 +1,16 @@
 'use client'
 
-import { useState, useEffect, Suspense } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
-import { useRouter, useSearchParams } from 'next/navigation'
 import { createSupabaseClient } from '@/lib/supabase-client'
 import { LogIn, Eye, EyeOff } from 'lucide-react'
 
-function AdminSignInContent() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
+export default function AdminSignIn() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-
-  // Check if this is a password reset redirect
-  useEffect(() => {
-    // Check for tokens in the URL hash (Supabase puts them there)
-    const hash = window.location.hash
-    if (hash.includes('access_token') && hash.includes('type=recovery')) {
-      // Redirect to reset password page with the tokens
-      router.push(`/admin/reset-password${hash}`)
-    }
-  }, [router])
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -39,87 +26,59 @@ function AdminSignInContent() {
 
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
-        email: email.trim(),
-        password: password.trim(),
+        email,
+        password,
       })
 
       if (error) {
-        setError(`Sign in failed: ${error.message}`)
+        setError(error.message)
       } else if (data.user) {
-        // Small delay to ensure session is established
-        setTimeout(() => {
-          router.push('/admin/dashboard')
-        }, 100)
-      } else {
-        setError('Sign in failed: No user data returned')
+        // Redirect to dashboard
+        window.location.href = '/admin/dashboard'
       }
-    } catch (err) {
-      setError(`An unexpected error occurred: ${err instanceof Error ? err.message : 'Unknown error'}`)
+    } catch {
+      setError('An unexpected error occurred')
     } finally {
       setLoading(false)
     }
   }
 
-  const handleForgotPassword = async () => {
-    const email = prompt("Enter your email address to reset your password:");
-    if (email) {
-      const supabase = createSupabaseClient();
-      if (!supabase) {
-        alert("Database connection not available");
-        return;
-      }
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setError('')
 
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/admin/reset-password`,
-      });
-      
+    const supabase = createSupabaseClient()
+    if (!supabase) {
+      setError('Database connection not available')
+      setLoading(false)
+      return
+    }
+
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+      })
+
       if (error) {
-        alert("Error sending reset email: " + error.message);
-      } else {
-        alert("Password reset email sent. Please check your inbox.");
+        setError(error.message)
+      } else if (data.user) {
+        setError('Account created! Please check your email to confirm your account, then sign in.')
       }
+    } catch {
+      setError('An unexpected error occurred')
+    } finally {
+      setLoading(false)
     }
   }
 
-  // const handleSignUp = async (e: React.FormEvent) => {
-  //   e.preventDefault()
-  //   setLoading(true)
-  //   setError('')
-
-  //   const supabase = createSupabaseClient()
-  //   if (!supabase) {
-  //     setError('Database connection not available')
-  //     setLoading(false)
-  //     return
-  //   }
-
-  //   try {
-  //     const { data, error } = await supabase.auth.signUp({
-  //       email,
-  //       password,
-  //     })
-
-  //     if (error) {
-  //       setError(error.message)
-  //     } else if (data.user) {
-  //       setError('Account created! Please check your email to confirm your account, then sign in.')
-  //     }
-  //   } catch {
-  //     setError('An unexpected error occurred')
-  //   } finally {
-  //     setLoading(false)
-  //   }
-  // }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0A0E27] to-[#1D3557] flex items-center justify-center px-4">
-      <div className="max-w-md w-full bg-white rounded-xl shadow-2xl p-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center px-4">
+      <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
         <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <div className="w-[50px] h-[50px] bg-gradient-to-br from-[#FF6B35] to-[#E63946] rounded-[50%_50%_0_50%]"></div>
-          </div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-[#FF6B35] to-[#E63946] bg-clip-text text-transparent mb-2">Eco Flame</h1>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Admin Login</h2>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-[#0066FF] to-[#00D9FF] bg-clip-text text-transparent mb-2">QuoteFlow by FixBlox</h1>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Tradesperson Login</h2>
           <p className="text-gray-600">Access your lead management dashboard</p>
         </div>
 
@@ -133,7 +92,7 @@ function AdminSignInContent() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="info@pdheating.com"
+              placeholder="admin@example.com"
               required
             />
           </div>
@@ -171,7 +130,7 @@ function AdminSignInContent() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center px-4 py-2 bg-gradient-to-r from-[#FF6B35] to-[#E63946] text-white rounded-lg hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
@@ -185,45 +144,31 @@ function AdminSignInContent() {
             
             <button
               type="button"
-              onClick={handleForgotPassword}
-              className="text-sm text-emerald-600 hover:underline mt-3 block text-center"
+              onClick={handleSignUp}
+              disabled={loading}
+              className="w-full flex items-center justify-center px-4 py-2 bg-gradient-to-r from-[#0066FF] to-[#00D9FF] text-white rounded-lg hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed font-semibold"
             >
-              Forgot Password?
+              Sign Up as a Tradesperson
             </button>
           </div>
         </form>
 
         <div className="mt-6 text-center">
           <Link
-            href="/"
-            className="text-[#FF6B35] hover:text-[#E63946] text-sm"
+            href="/quoteflow"
+            className="text-blue-600 hover:text-blue-700 text-sm"
           >
-            ← Back to Home
+            ← Back to QuoteFlow
           </Link>
         </div>
 
-        <div className="mt-8 p-4 bg-gradient-to-r from-orange-50 to-red-50 rounded-lg border border-orange-100">
-          <h3 className="text-sm font-medium text-gray-900 mb-2">🔥 Eco Flame Admin</h3>
+        <div className="mt-8 p-4 bg-gradient-to-r from-sky-50 to-indigo-50 rounded-lg border border-gray-100">
+          <h3 className="text-sm font-medium text-gray-900 mb-2">✨ Start Your Free Trial</h3>
           <p className="text-xs text-gray-600">
-            Secure login for Eco Flame staff only. If you need access, please contact your administrator.
+            Create your QuoteFlow account and start receiving qualified plumbing leads today. 14-day free trial, no credit card required.
           </p>
         </div>
       </div>
     </div>
-  )
-}
-
-export default function AdminSignIn() {
-  return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-gradient-to-br from-[#0A0E27] to-[#1D3557] flex items-center justify-center px-4">
-        <div className="max-w-md w-full bg-white rounded-xl shadow-2xl p-8 text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#FF6B35] mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
-        </div>
-      </div>
-    }>
-      <AdminSignInContent />
-    </Suspense>
   )
 }
